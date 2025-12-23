@@ -2,205 +2,62 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>【上架】碳基生物商品化装置</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #008080; font-family: 'SimSun', serif; padding: 20px; cursor: crosshair; }
-        
-        .win95-border {
-            box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000;
-            background: #c0c0c0; border: 1px solid #000;
-        }
-
-        .glitch-title {
-            color: #ff00ff;
-            text-shadow: 3px 3px #00ffff;
-            font-family: 'Arial Black', sans-serif;
-            letter-spacing: -2px;
-            animation: jitter 0.3s infinite;
-        }
-        @keyframes jitter {
-            0% { transform: translate(0,0); }
-            50% { transform: translate(-1px, 1px); }
-            100% { transform: translate(1px, -1px); }
-        }
-
-        .marquee-container {
-            background: #000;
-            border: 2px inset #808080;
-            color: #0f0;
-            padding: 4px;
-            font-family: monospace;
-            font-size: 14px;
-        }
-
-        .win95-inset { border: 2px inset #fff; background: #fff; }
-        .win95-btn {
-            box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000;
-            background: #c0c0c0; font-weight: bold;
-        }
+        body { background-color: #008080; font-family: 'SimSun', serif; padding: 20px; }
+        .win95-border { box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; background: #c0c0c0; border: 1px solid #000; }
+        .win95-btn { box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; background: #c0c0c0; font-weight: bold; }
         .win95-btn:active { box-shadow: inset 1.5px 1.5px 0px #808080, 1px 1px 0px #fff; transform: translate(1px, 1px); }
-        /* 禁用状态样式 */
-        .win95-btn:disabled { color: #808080; cursor: not-allowed; opacity: 0.6; }
-        
-        .rec-dot { width: 10px; height: 10px; background: red; border-radius: 50%; display: inline-block; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .win95-btn:disabled { color: #808080; opacity: 0.6; }
     </style>
 </head>
 <body class="flex flex-col items-center">
-
-    <div class="win95-border p-2 mb-6 w-full max-w-4xl text-center">
-        <div class="bg-[#000080] text-white px-2 py-1 flex justify-between items-center mb-4">
-            <span class="text-xs font-bold">RACKED_UP_PROCEDURE.EXE</span>
-            <span class="text-xs">[_] [X]</span>
+    <div class="win95-border p-4 w-full max-w-2xl">
+        <div id="drop-zone" class="border-2 border-dashed border-gray-600 h-40 flex items-center justify-center mb-4 cursor-pointer">
+            <p>点击或拖入照片</p>
+            <input type="file" id="file-input" class="hidden" accept="image/*">
         </div>
-        <div class="p-4">
-            <h1 class="text-6xl md:text-8xl font-black glitch-title mb-2">上 架</h1>
-            <p class="text-black bg-yellow-400 inline-block px-4 py-1 font-bold italic border border-black shadow-[4px_4px_0_#000]">
-                “差不多得了，这就把你挂上去😅”
-            </p>
-        </div>
-    </div>
-
-    <div class="marquee-container mb-8 w-full max-w-4xl">
-        <marquee scrollamount="6">
-            紧急通知：检测到大量未标价生命体... | 系统正在监视你的每一个动作 | 所有人最终都将被明码标价 | 这里的空气充满了保质期的味道... | 请自觉排队上架，严禁逃离货架...
-        </marquee>
-    </div>
-
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl">
-        <div class="win95-border p-4 flex flex-col">
-            <div class="bg-gray-700 text-white px-2 py-1 text-xs mb-4 flex justify-between">
-                <span>入库登记 / INPUT_LOG</span>
-                <span class="opacity-50">UNIT_2509</span>
-            </div>
-            <div id="drop-zone" class="flex-grow win95-inset h-80 flex flex-col items-center justify-center relative overflow-hidden">
-                <div id="upload-ui" class="text-center">
-                    <img src="https://img.icons8.com/pixel-metropolis/64/upload.png" class="mx-auto mb-4 grayscale">
-                    <p class="text-black font-bold text-xs">拖入/点击上传照片</p>
-                </div>
-                <img id="preview-img" class="hidden w-full h-full object-contain p-2">
-                <input type="file" id="file-input" class="hidden" accept="image/*">
-            </div>
-
-            <div class="bg-black text-[#0f0] p-2 mt-4 h-20 text-[10px] font-mono leading-tight border-2 border-gray-600">
-                <p id="log-1">> 核心逻辑已加载...</p>
-                <p id="log-2">> 待命状态...</p>
-            </div>
-            <button id="submit-btn" class="win95-btn mt-4 py-3 text-xl uppercase tracking-tighter">执行上架程序 [EXE]</button>
-            
-            <button id="gallery-btn" class="win95-btn mt-2 py-2 text-sm uppercase tracking-widest border-t-2 border-gray-400" disabled>
-                查看所有货位 [GALLERY]
-            </button>
-        </div>
-
-        <div class="win95-border p-4 flex flex-col">
-            <div class="bg-gray-700 text-white px-2 py-1 text-xs mb-4 flex justify-between">
-                <span>货架实况 / LIVE_FEED</span>
-                <span class="opacity-50">CCTV_CH.12</span>
-            </div>
-            <div id="result-box" class="flex-grow bg-[#000] border-2 border-black flex items-center justify-center relative overflow-hidden min-h-[320px]">
-                <div id="status-text" class="text-[#0f0] font-mono text-xs text-center">
-                    <span class="rec-dot"></span> NO_SIGNAL<br>WAITING_FOR_ASSET...
-                </div>
-                <img id="final-img" class="hidden w-full h-full object-contain z-10">
-                
-                <div id="price-tag" class="hidden absolute top-5 right-5 bg-white border-2 border-black p-2 text-black font-black rotate-6 shadow-2xl z-20">
-                    <p class="text-[10px] border-b border-black">价格 PRICE</p>
-                    <p class="text-2xl" id="random-price">￥9.9</p>
-                    <div class="w-full h-2 bg-black mt-1 opacity-20"></div>
-                </div>
-            </div>
-            <div class="win95-inset bg-[#e0e0e0] p-3 mt-4 text-xs italic text-gray-700 min-h-[60px] flex items-center justify-center text-center">
-                <span id="quote-area">“被贴上标签，也是一种归宿。”</span>
-            </div>
-        </div>
-    </main>
-
-    <div class="win95-border w-full max-w-6xl mt-8 p-1 text-[10px] text-black flex justify-between">
-        <div class="border-r border-gray-600 px-4">STATUS: OPERATIONAL</div>
-        <div class="border-r border-gray-600 px-4">SERVER: INTERNAL_UNIT_2509</div>
-        <div class="px-4" id="clock">TIME: 2025-12-22 00:00:00</div>
+        <button id="submit-btn" class="win95-btn w-full py-2">执行上架程序 [EXE]</button>
+        <button id="gallery-btn" class="win95-btn w-full py-2 mt-2" disabled onclick="location.href='/gallery'">查看货架 [GALLERY]</button>
     </div>
 
     <script>
         const fileInput = document.getElementById('file-input');
-        const dropZone = document.getElementById('drop-zone');
-        const previewImg = document.getElementById('preview-img');
         const submitBtn = document.getElementById('submit-btn');
-        const galleryBtn = document.getElementById('gallery-btn'); // 获取新按钮
-        const finalImg = document.getElementById('final-img');
-        const statusText = document.getElementById('status-text');
-        const priceTag = document.getElementById('price-tag');
-        const randomPrice = document.getElementById('random-price');
-        const quoteArea = document.getElementById('quote-area');
-        const log1 = document.getElementById('log-1');
-        const log2 = document.getElementById('log-2');
-
-        const prices = ["￥0.01", "一根鸡腿", "灵魂(折旧)", "V我50", "￥999,999", "禁止转卖"];
-        const quotes = ["“被贴上标签，也是一种归宿。”", "“这里的空气，充满了保质期的味道。”", "“差不多得了，这就把你挂上去😅”"];
-
-        setInterval(() => {
-            const now = new Date();
-            document.getElementById('clock').innerText = "TIME: " + now.toLocaleString();
-        }, 1000);
-
-        dropZone.onclick = () => fileInput.click();
-        fileInput.onchange = (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    previewImg.src = event.target.result;
-                    previewImg.classList.remove('hidden');
-                    document.getElementById('upload-ui').classList.add('hidden');
-                    log2.innerText = "> 素材已载入。";
-                };
-                reader.readAsDataURL(file);
-            }
-        };
-
-        // 新增：跳转至货架页面逻辑
-        galleryBtn.onclick = () => {
-            window.location.href = 'gallery.html';
-        };
+        const galleryBtn = document.getElementById('gallery-btn');
 
         submitBtn.onclick = async () => {
-            if (!fileInput.files[0]) return;
+            if (!fileInput.files[0]) return alert("请先选择照片");
+            
             submitBtn.disabled = true;
             submitBtn.innerText = "打码中...";
-            log1.innerText = "> 正在连接内部单元...";
-            log2.innerText = "> 正在执行上架指令...";
-            statusText.innerHTML = "<span class='rec-dot'></span> 正在扫描骨骼...<br>正在对齐货位...";
             
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
             try {
+                // 指向 /upload 接口
                 const response = await fetch('/upload', { method: 'POST', body: formData });
                 const data = await response.json();
-                if (data.url) {
-                    finalImg.src = data.url;
-                    finalImg.classList.remove('hidden');
-                    statusText.classList.add('hidden');
-                    priceTag.classList.remove('hidden');
-                    randomPrice.innerText = prices[Math.floor(Math.random() * prices.length)];
-                    quoteArea.innerText = quotes[Math.floor(Math.random() * quotes.length)];
-                    log1.innerText = "> 任务完成。";
-                    log2.innerText = "> 资产已同步。";
-                    
-                    // 成功后亮起画廊按钮
+                
+                if (data.status === 'success') {
+                    alert("上架成功！已同步至云端。");
                     galleryBtn.disabled = false;
-                    galleryBtn.classList.add('bg-blue-600', 'text-white'); 
+                    galleryBtn.style.backgroundColor = "#000080";
+                    galleryBtn.style.color = "white";
+                } else {
+                    alert("错误: " + data.message);
                 }
             } catch (err) {
-                statusText.innerText = "ERROR: 终端失联";
+                alert("网络连接失败");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "执行上架程序 [EXE]";
             }
         };
+
+        document.getElementById('drop-zone').onclick = () => fileInput.click();
     </script>
 </body>
 </html>
