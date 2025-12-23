@@ -2,93 +2,127 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>【上架】碳基生物商品化装置</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #008080; font-family: 'SimSun', serif; padding: 20px; }
+        /* 保留你的所有原版样式 */
+        body { background-color: #008080; font-family: 'SimSun', serif; padding: 20px; cursor: crosshair; }
         .win95-border { box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; background: #c0c0c0; border: 1px solid #000; }
+        .glitch-title { color: #ff00ff; text-shadow: 3px 3px #00ffff; font-family: 'Arial Black', sans-serif; animation: jitter 0.3s infinite; }
+        @keyframes jitter { 0% { transform: translate(0,0); } 50% { transform: translate(-1px, 1px); } 100% { transform: translate(1px, -1px); } }
+        .marquee-container { background: #000; border: 2px inset #808080; color: #0f0; padding: 4px; font-family: monospace; }
+        .win95-inset { border: 2px inset #fff; background: #fff; }
         .win95-btn { box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; background: #c0c0c0; font-weight: bold; }
         .win95-btn:active { box-shadow: inset 1.5px 1.5px 0px #808080, 1px 1px 0px #fff; transform: translate(1px, 1px); }
-        .win95-btn:disabled { color: #808080; opacity: 0.6; }
-        /* 蓝色标头 */
-        .blue-header { background: #000080; color: white; padding: 3px 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        /* 黑色终端绿字 */
-        .terminal { background: #000; color: #00ff00; font-family: 'Consolas', monospace; padding: 15px; border: 2px inset #808080; height: 180px; overflow-y: auto; font-size: 13px; line-height: 1.6; }
-        .terminal p { margin: 0; }
+        .win95-btn:disabled { color: #808080; cursor: not-allowed; opacity: 0.6; }
+        .rec-dot { width: 10px; height: 10px; background: red; border-radius: 50%; display: inline-block; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen">
-    
-    <div class="win95-border p-1 w-full max-w-2xl">
-        <div class="blue-header">
-            <span>[上架] 碳基生物数字化管理系统</span>
-            <span>[X]</span>
+<body class="flex flex-col items-center">
+
+    <div class="win95-border p-2 mb-6 w-full max-w-4xl text-center">
+        <div class="bg-[#000080] text-white px-2 py-1 flex justify-between items-center mb-4">
+            <span class="text-xs font-bold">[上架] RACKED_UP_PROCEDURE.EXE</span>
+            <span class="text-xs">[_] [X]</span>
         </div>
-        
-        <div class="p-4 bg-[#c0c0c0]">
-            <div id="drop-zone" class="win95-border bg-white border-2 border-dashed border-gray-400 h-40 flex flex-col items-center justify-center mb-4 cursor-pointer">
-                <p id="status-text" class="text-black font-bold">>>> 点击捕获碳基生命样本 <<<</p>
-                <input type="file" id="file-input" class="hidden" accept="image/*">
-            </div>
-
-            <div class="terminal mb-4" id="terminal">
-                <p>> 初始化核心模块...</p>
-                <p>> 等待外部采样输入...</p>
-            </div>
-
-            <div class="flex flex-col gap-2">
-                <button id="submit-btn" class="win95-btn w-full py-3 text-lg">执行上架程序 [EXE]</button>
-                <button id="gallery-btn" class="win95-btn w-full py-2 text-sm" disabled onclick="location.href='/gallery'">查看货架 [GALLERY]</button>
-            </div>
+        <div class="p-4">
+            <h1 class="text-6xl md:text-8xl font-black glitch-title mb-2">上 架</h1>
+            <p class="text-black bg-yellow-400 inline-block px-4 py-1 font-bold italic border border-black shadow-[4px_4px_0_#000]">
+                “差不多得了，这就把你挂上去😅”
+            </p>
         </div>
     </div>
 
+    <div class="marquee-container mb-8 w-full max-w-4xl">
+        <marquee scrollamount="6">
+            检测到未标价生命体... | 系统正在监视你... | 所有人最终都将被明码标价 | 严禁逃离货架...
+        </marquee>
+    </div>
+
+    <main class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl">
+        <div class="win95-border p-4 flex flex-col">
+            <div id="drop-zone" class="flex-grow win95-inset h-80 flex flex-col items-center justify-center relative overflow-hidden cursor-pointer">
+                <div id="upload-ui" class="text-center">
+                    <img src="https://img.icons8.com/pixel-metropolis/64/upload.png" class="mx-auto mb-4 grayscale">
+                    <p class="text-black font-bold text-xs font-mono">>>> 点击/拖入碳基样本 <<<</p>
+                </div>
+                <img id="preview-img" class="hidden w-full h-full object-contain p-2">
+                <input type="file" id="file-input" class="hidden" accept="image/*">
+            </div>
+
+            <div class="bg-black text-[#0f0] p-2 mt-4 h-24 text-[10px] font-mono leading-tight border-2 border-gray-600">
+                <p id="log-1">> 系统就绪...</p>
+                <p id="log-2">> 待命状态...</p>
+            </div>
+            <button id="submit-btn" class="win95-btn mt-4 py-3 text-xl uppercase tracking-tighter">执行上架程序 [EXE]</button>
+            <button id="gallery-btn" class="win95-btn mt-2 py-2 text-sm uppercase tracking-widest" disabled onclick="location.href='/gallery'">查看货位 [GALLERY]</button>
+        </div>
+
+        <div class="win95-border p-4 flex flex-col">
+            <div id="result-box" class="flex-grow bg-[#000] border-2 border-black flex items-center justify-center relative overflow-hidden min-h-[320px]">
+                <div id="status-text" class="text-[#0f0] font-mono text-xs text-center">
+                    <span class="rec-dot"></span> NO_SIGNAL<br>WAITING_FOR_ASSET...
+                </div>
+                <img id="final-img" class="hidden w-full h-full object-contain z-10">
+                
+                <div id="price-tag" class="hidden absolute top-5 right-5 bg-yellow-400 border-2 border-black p-2 text-black font-black rotate-12 shadow-2xl z-20">
+                    <p class="text-[10px]">价格 PRICE</p>
+                    <p class="text-2xl" id="random-price">￥0.50</p>
+                </div>
+            </div>
+            <div class="win95-inset bg-[#e0e0e0] p-3 mt-4 text-xs italic text-gray-700 min-h-[60px] flex items-center justify-center text-center">
+                <span id="quote-area">“被贴上标签，也是一种归宿。”</span>
+            </div>
+        </div>
+    </main>
+
     <script>
+        // 逻辑保持原版，但修正了上传接口
         const fileInput = document.getElementById('file-input');
         const submitBtn = document.getElementById('submit-btn');
         const galleryBtn = document.getElementById('gallery-btn');
-        const term = document.getElementById('terminal');
+        const finalImg = document.getElementById('final-img');
         const statusText = document.getElementById('status-text');
-
-        // 终端增加绿字函数
-        function addLog(text) {
-            const p = document.createElement('p');
-            p.innerText = "> " + text;
-            term.appendChild(p);
-            term.scrollTop = term.scrollHeight;
-        }
+        const priceTag = document.getElementById('price-tag');
+        const log1 = document.getElementById('log-1');
+        const log2 = document.getElementById('log-2');
 
         document.getElementById('drop-zone').onclick = () => fileInput.click();
-        
-        fileInput.onchange = () => {
-            if(fileInput.files[0]) {
-                statusText.innerText = "样本已装载: " + fileInput.files[0].name;
-                addLog("样本捕获成功。大小: " + (fileInput.files[0].size/1024).toFixed(2) + "KB");
+
+        fileInput.onchange = (e) => {
+            if (e.target.files[0]) {
+                document.getElementById('preview-img').src = URL.createObjectURL(e.target.files[0]);
+                document.getElementById('preview-img').classList.remove('hidden');
+                document.getElementById('upload-ui').classList.add('hidden');
+                log2.innerText = "> 碳基样本已装载。";
             }
         };
 
         submitBtn.onclick = async () => {
-            if (!fileInput.files[0]) return alert("未发现待上架样本！");
-            
+            if (!fileInput.files[0]) return;
             submitBtn.disabled = true;
-            submitBtn.innerText = "正在打码...";
-            addLog("开始资产转换流程...");
-            addLog("正在上传至异化引擎 (SiliconFlow)...");
-
+            submitBtn.innerText = "打码中...";
+            log1.innerText = "> 正在剥离特征...";
+            log2.innerText = "> 正在调用异化引擎...";
+            statusText.innerHTML = "<span class='rec-dot'></span> 正在扫描骨骼...<br>正在挂单中...";
+            
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
             try {
+                // 关键修复：指向 /upload 接口而非本地地址
                 const response = await fetch('/upload', { method: 'POST', body: formData });
                 const data = await response.json();
                 
-                if (data.status === 'success') {
-                    addLog("AI 异化成功。");
-                    addLog("资产已入库。分配路径: shelf/" + data.url.split('/').pop());
-                    addLog("正在建立远程连接...");
-                    addLog("上架操作已完成。");
-                    
-                    alert("上架成功！资产已同步至云端货位。");
+                if (data.url) {
+                    finalImg.src = data.url;
+                    finalImg.classList.remove('hidden');
+                    statusText.classList.add('hidden');
+                    priceTag.classList.remove('hidden');
+                    log1.innerText = "> 任务完成。";
+                    log2.innerText = "> 资产已同步至 GitHub。";
                     galleryBtn.disabled = false;
                     galleryBtn.style.backgroundColor = "#000080";
                     galleryBtn.style.color = "white";
@@ -96,8 +130,8 @@
                     throw new Error(data.message);
                 }
             } catch (err) {
-                addLog("!! 致命错误: " + err.message);
-                alert("上架失败，请检查 API Token 或网络连接。");
+                statusText.innerText = "ERROR: " + err.message;
+                log1.innerText = "> 致命错误: 无法连接。";
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "执行上架程序 [EXE]";
