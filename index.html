@@ -2,157 +2,117 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>【上架】碳基生物商品化装置</title>
+    <title>汇报：碳基生物商品化装置</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #008080; font-family: 'SimSun', serif; padding: 20px; cursor: crosshair; }
-        .win95-border {
-            box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000;
-            background: #c0c0c0; border: 1px solid #000;
-        }
-        .glitch-title {
-            color: #ff00ff; text-shadow: 3px 3px #00ffff; font-family: 'Arial Black', sans-serif;
-            animation: jitter 0.3s infinite;
-        }
-        @keyframes jitter {
-            0% { transform: translate(0,0); }
-            50% { transform: translate(-1px, 1px); }
-            100% { transform: translate(1px, -1px); }
-        }
-        .marquee-container { background: #000; border: 2px inset #808080; color: #0f0; padding: 4px; font-family: monospace; }
-        .win95-inset { border: 2px inset #fff; background: #fff; }
-        .win95-btn {
-            box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000;
-            background: #c0c0c0; font-weight: bold;
-        }
-        .win95-btn:active { box-shadow: inset 1.5px 1.5px 0px #808080, 1px 1px 0px #fff; transform: translate(1px, 1px); }
-        .win95-btn:disabled { color: #808080; cursor: not-allowed; opacity: 0.6; }
-        .rec-dot { width: 10px; height: 10px; background: red; border-radius: 50%; display: inline-block; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        body { background-color: #008080; font-family: 'SimSun', serif; overflow: hidden; }
+        .slide { display: none; height: 100vh; width: 100vw; padding: 30px; }
+        .active { display: flex; flex-direction: column; }
+        .win95-border { box-shadow: inset 2px 2px 0px #fff, inset -2px -2px 0px #808080, 2px 2px 0px #000; background: #c0c0c0; border: 1px solid #000; }
+        .blue-header { background: #000080; color: white; padding: 8px 15px; font-weight: bold; }
+        .text-body { font-size: 1.8rem; line-height: 1.6; }
+        .nav-bar { position: fixed; bottom: 30px; right: 40px; display: flex; gap: 15px; }
+        .win95-btn { padding: 10px 25px; background: #c0c0c0; border: 3px outset #fff; font-weight: bold; cursor: pointer; }
     </style>
 </head>
-<body class="flex flex-col items-center">
+<body>
 
-    <div class="win95-border p-2 mb-6 w-full max-w-4xl text-center">
-        <div class="bg-[#000080] text-white px-2 py-1 flex justify-between items-center mb-4 text-xs font-bold">
-            <span>RACKED_UP_PROCEDURE.EXE</span>
-            <span>[_] [X]</span>
-        </div>
-        <div class="p-4">
-            <h1 class="text-6xl md:text-8xl font-black glitch-title mb-2">上 架</h1>
-            <p class="text-black bg-yellow-400 inline-block px-4 py-1 font-bold italic border border-black shadow-[4px_4px_0_#000]">
-                “差不多得了，这就把你挂上去😅”
-            </p>
+    <div class="slide active" id="slide1">
+        <div class="win95-border m-auto w-4/5 p-16">
+            <h1 class="text-7xl font-black text-blue-900 mb-10">碳基生物商品化装置</h1>
+            <div class="text-body border-l-8 border-blue-800 pl-8 bg-gray-100 py-6">
+                <p>探讨影像如何在 Meme 文化 与 商品逻辑 中流通。</p>
+                <p>影像语言不再只存在于画面内部，而是存在于系统结构与展示方式之中。</p>
+            </div>
         </div>
     </div>
 
-    <div class="marquee-container mb-8 w-full max-w-4xl">
-        <marquee scrollamount="6">
-            检测到未标价生命体... | 系统正在监视你... | 所有人最终都将被明码标价... | 严禁逃离货架...
-        </marquee>
+    <div class="slide" id="slide2">
+        <div class="win95-border h-full flex flex-col">
+            <div class="blue-header">CONCEPT_ANALYSIS.SYS</div>
+            <div class="flex-grow p-12 grid grid-cols-2 gap-12">
+                <div class="win95-border p-10 bg-[#000080] text-white">
+                    <h2 class="text-4xl font-bold mb-6 italic text-yellow-400">Meme 文化</h2>
+                    <p class="text-2xl">去作者、去语境、快速流通。强调“可用性”而非“完整性”。</p>
+                </div>
+                <div class="win95-border p-10 bg-white">
+                    <h3 class="text-4xl font-bold mb-6 text-blue-900 underline text-center">商品系统</h3>
+                    <ul class="text-2xl space-y-4 font-bold">
+                        <li>• 可定价 / 可替换</li>
+                        <li>• 可库存 / 可索引</li>
+                        <li class="bg-blue-900 text-white px-2 mt-4 inline-block">Meme 本身已是一种商品上架形式</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl">
-        <div class="win95-border p-4 flex flex-col">
-            <div id="drop-zone" class="flex-grow win95-inset h-80 flex flex-col items-center justify-center relative cursor-pointer overflow-hidden">
-                <div id="upload-ui" class="text-center">
-                    <img src="https://img.icons8.com/pixel-metropolis/64/upload.png" class="mx-auto mb-4 grayscale">
-                    <p class="text-black font-bold text-xs">拖入/点击上传照片</p>
+    <div class="slide" id="slide3">
+        <div class="win95-border h-full flex flex-col">
+            <div class="blue-header">CORE_OPERATION.EXE</div>
+            <div class="flex-grow p-12 flex gap-10">
+                <div class="w-1/2 flex flex-col justify-center space-y-8">
+                    <h2 class="text-5xl font-black text-red-600 underline">上架动作：悬挂</h2>
+                    <p class="text-3xl">1. 提取人物影像</p>
+                    <p class="text-3xl">2. 统一转化为 <span class="bg-black text-white px-2">悬挂姿态</span></p>
+                    <p class="text-3xl">3. 模拟引体向上的物理挂载</p>
+                    <p class="text-2xl italic text-gray-600">将人体自然纳入“货架展示逻辑”</p>
                 </div>
-                <img id="preview-img" class="hidden w-full h-full object-contain p-2">
-                <input type="file" id="file-input" class="hidden" accept="image/*">
-            </div>
-
-            <div class="bg-black text-[#0f0] p-2 mt-4 h-24 text-[10px] font-mono leading-tight border-2 border-gray-600 overflow-y-auto" id="terminal">
-                <p id="log-1">> 核心逻辑已加载...</p>
-                <p id="log-2">> 待命状态...</p>
-            </div>
-            <button id="submit-btn" class="win95-btn mt-4 py-3 text-xl uppercase">执行上架程序 [EXE]</button>
-            <button id="gallery-btn" class="win95-btn mt-2 py-2 text-sm" disabled onclick="location.href='gallery.html'">查看货位 [GALLERY]</button>
-        </div>
-
-        <div class="win95-border p-4 flex flex-col">
-            <div id="result-box" class="flex-grow bg-[#000] border-2 border-black flex items-center justify-center relative overflow-hidden min-h-[320px]">
-                <div id="status-text" class="text-[#0f0] font-mono text-xs text-center">
-                    <span class="rec-dot"></span> NO_SIGNAL<br>WAITING_FOR_ASSET...
+                <div class="w-1/2 border-4 border-gray-400 bg-gray-50 flex items-center justify-center">
+                    <div class="text-9xl grayscale opacity-30">🧍</div>
+                    <div class="absolute top-1/4 w-1/3 h-2 bg-black"></div>
                 </div>
-                <img id="final-img" class="hidden w-full h-full object-contain z-10">
-                
-                <div id="price-tag" class="hidden absolute top-5 right-5 bg-yellow-400 border-2 border-black p-2 text-black font-black rotate-6 shadow-2xl z-20">
-                    <p class="text-[10px] border-b border-black">价格 PRICE</p>
-                    <p class="text-2xl">￥0.50</p>
-                </div>
-            </div>
-            <div class="win95-inset bg-[#e0e0e0] p-3 mt-4 text-xs italic text-gray-700 text-center">
-                “被贴上标签，也是一种归宿。”
             </div>
         </div>
-    </main>
+    </div>
+
+    <div class="slide" id="slide4">
+        <div class="win95-border h-full flex flex-col">
+            <div class="blue-header">VISUAL_STYLE.CFG</div>
+            <div class="flex-grow p-12">
+                <div class="grid grid-cols-2 gap-8 mb-10 text-3xl font-bold">
+                    <div class="win95-border p-6 bg-white text-center">📸 写实摄影风格</div>
+                    <div class="win95-border p-6 bg-white text-center">🧍 完整人体呈现</div>
+                    <div class="win95-border p-6 bg-white text-center">⬜ 统一白色背景</div>
+                    <div class="win95-border p-6 bg-white text-center">🚫 去除具体叙事</div>
+                </div>
+                <div class="bg-black p-10 text-white text-4xl italic text-center">
+                    “产生一种‘看起来不太对，但又说不出哪里不对’的状态。”
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide5">
+        <div class="win95-border h-full flex flex-col">
+            <div class="blue-header">ARTISTIC_EXPRESSION.LOG</div>
+            <div class="flex-grow p-12 flex flex-col justify-center">
+                <h2 class="text-5xl font-black mb-10 border-b-8 border-blue-900 inline-block">我想浅浅表达的是...</h2>
+                <div class="text-3xl space-y-8 leading-relaxed">
+                    <p>Meme 往往是低像素、不被认为是“有用”的。而现代社会总执着于将一切“上架”。</p>
+                    <p class="bg-yellow-200 p-6">我通过这种创作去搜集这些上架 Meme，不仅是因为好玩，更是想观察当这些“无用”影像被塞进极其正经的商品系统时，所产生的<span class="text-red-600 font-bold underline">有序的荒谬感</span>。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <button class="win95-btn" onclick="move(-1)">PREV</button>
+        <button class="win95-btn" onclick="move(1)">NEXT</button>
+    </div>
 
     <script>
-        const fileInput = document.getElementById('file-input');
-        const submitBtn = document.getElementById('submit-btn');
-        const galleryBtn = document.getElementById('gallery-btn');
-        const finalImg = document.getElementById('final-img');
-        const statusText = document.getElementById('status-text');
-        const priceTag = document.getElementById('price-tag');
-        const log1 = document.getElementById('log-1');
-        const log2 = document.getElementById('log-2');
-
-        document.getElementById('drop-zone').onclick = () => fileInput.click();
-
-        fileInput.onchange = (e) => {
-            if (e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    document.getElementById('preview-img').src = ev.target.result;
-                    document.getElementById('preview-img').classList.remove('hidden');
-                    document.getElementById('upload-ui').classList.add('hidden');
-                    log2.innerText = "> 样本已装载。";
-                };
-                reader.readAsDataURL(e.target.files[0]);
-            }
-        };
-
-        submitBtn.onclick = async () => {
-            if (!fileInput.files[0]) return;
-            submitBtn.disabled = true;
-            submitBtn.innerText = "打码中...";
-            log1.innerText = "> 正在连接 AI 引擎...";
-            log2.innerText = "> 正在执行异化上架...";
-            statusText.innerHTML = "<span class='rec-dot'></span> 正在剥离特征...<br>正在分配货位...";
-            
-            const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-
-            try {
-                // 指向云端相对路径
-                const response = await fetch('/upload', { method: 'POST', body: formData });
-                const data = await response.json();
-                
-                if (data.status === 'success') {
-                    finalImg.src = data.url;
-                    finalImg.classList.remove('hidden');
-                    statusText.classList.add('hidden');
-                    priceTag.classList.remove('hidden');
-                    log1.innerText = "> 任务完成。";
-                    log2.innerText = "> 资产已成功入库。";
-                    galleryBtn.disabled = false;
-                    galleryBtn.style.backgroundColor = "#000080";
-                    galleryBtn.style.color = "white";
-                } else {
-                    throw new Error(data.message);
-                }
-            } catch (err) {
-                statusText.innerText = "ERROR: " + err.message;
-                log1.innerText = "> 致命错误: 系统中断";
-                log2.innerText = "> 原因: " + err.message;
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "执行上架程序 [EXE]";
-            }
-        };
+        let current = 1; const total = 5;
+        function move(dir) {
+            document.getElementById('slide' + current).classList.remove('active');
+            current += dir;
+            if (current > total) current = 1; if (current < 1) current = total;
+            document.getElementById('slide' + current).classList.add('active');
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key === 'ArrowRight' || e.key === ' ') move(1);
+            if (e.key === 'ArrowLeft') move(-1);
+        });
     </script>
 </body>
 </html>
