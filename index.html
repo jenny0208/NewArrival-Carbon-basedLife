@@ -2,131 +2,83 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>碳基生物商品化装置 - 样本上传</title>
+    <title>RACKED_UP_PROCEDURE.EXE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #008080; font-family: 'SimSun', serif; color: #000; padding: 20px; }
+        body { background-color: #008080; font-family: 'SimSun', serif; overflow-x: hidden; }
         .win95-border { box-shadow: inset 2px 2px 0px #fff, inset -2px -2px 0px #808080, 2px 2px 0px #000; background: #c0c0c0; border: 1px solid #000; }
-        .blue-header { background: #000080; color: white; padding: 5px 10px; font-weight: bold; display: flex; justify-content: space-between; }
-        
-        /* 终端样式 */
-        #console { background: #000; color: #0f0; font-family: monospace; padding: 15px; height: 200px; overflow-y: auto; font-size: 14px; border: 2px inset #808080; }
-        
-        /* 模拟 Meme 低像素滤镜 */
-        .meme-low-fi { 
-            image-rendering: pixelated; 
-            filter: contrast(1.2) brightness(1.1) saturate(1.1); 
-            border: 1px solid #000;
-        }
-
-        .tag-price { background: #ffff00; color: #f00; border: 1px solid #000; padding: 2px 8px; font-weight: 900; transform: rotate(-5deg); position: absolute; top: 10px; right: 10px; box-shadow: 2px 2px 0px #000; }
-        
-        .upload-btn { padding: 10px 20px; background: #c0c0c0; border: 3px outset #fff; font-weight: bold; cursor: pointer; }
-        .upload-btn:active { border: 3px inset #fff; }
-        .hidden { display: none; }
+        .blue-header { background: #000080; color: white; padding: 2px 8px; font-weight: bold; font-size: 14px; }
+        .neon-title { font-size: 120px; color: #ff00ff; font-weight: 900; text-shadow: 4px 4px #00ffff; line-height: 1; }
+        .sub-slogan { background: #ffff00; border: 2px solid #000; padding: 5px 15px; font-weight: bold; transform: translateY(-20px); display: inline-block; }
+        .marquee-box { background: #000; color: #0f0; padding: 10px; font-family: monospace; border-y: 2px solid #000; }
+        .window-box { width: 500px; height: 600px; display: flex; flex-direction: column; }
+        #display-box { background: #000; height: 100%; border: 4px inset #808080; display: flex; items-center; justify-center; position: relative; overflow: hidden; }
+        .price-tag { background: #ffff00; color: #f00; border: 2px solid #000; padding: 5px 15px; font-weight: 900; transform: rotate(-10deg); position: absolute; top: 20px; right: 20px; font-size: 32px; z-index: 10; }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen">
-
-    <div class="win95-border w-full max-w-4xl">
-        <div class="blue-header">
-            <span>CARBON_LIFE_COMMODITIZER.EXE</span>
-            <span>[?] [X]</span>
-        </div>
-        
-        <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="space-y-6">
-                <div class="win95-border p-4 bg-white">
-                    <h2 class="font-bold mb-4 border-b-2 border-black">1. 采集碳基样本</h2>
-                    <input type="file" id="fileInput" class="mb-4 text-sm" accept="image/*">
-                    <button onclick="startProcess()" class="upload-btn w-full">执行“上架”指令</button>
-                </div>
-
-                <div id="console">
-                    > 系统就绪...<br>
-                    > 等待输入样本...<br>
-                </div>
-            </div>
-
-            <div class="win95-border p-4 bg-gray-100 flex flex-col items-center justify-center relative min-h-[300px]">
-                <div id="loading" class="hidden flex flex-col items-center">
-                    <div class="animate-spin text-4xl mb-4">⏳</div>
-                    <p class="italic text-gray-600 font-bold">正在进行商品化处理...</p>
-                </div>
-
-                <div id="result-container" class="hidden relative">
-                    <div class="tag-price">￥0.50</div>
-                    <img id="result-img" src="" alt="Result" class="meme-low-fi w-full max-w-[300px]">
-                    <p class="text-center mt-4 font-mono text-sm bg-black text-white p-2">ITEM_ID: <span id="item-id"></span></p>
-                </div>
-
-                <div id="placeholder" class="text-gray-400 italic text-center text-sm">
-                    [ 货架位待机 ]<br>等待上架动作...
-                </div>
+<body>
+    <div class="flex flex-col items-center mt-10">
+        <div class="win95-border w-[800px]">
+            <div class="blue-header"><span>RACKED_UP_PROCEDURE.EXE</span><span>[_][X]</span></div>
+            <div class="p-10 flex flex-col items-center">
+                <h1 class="neon-title">上 架</h1>
+                <div class="sub-slogan">“差不多得了，这就把你挂上去🤣”</div>
             </div>
         </div>
-        
-        <div class="p-4 bg-gray-300 text-xs text-right border-t border-black italic">
-            影像状态：无用之用 | 上架执着：ENABLED
+    </div>
+
+    <div class="marquee-box mt-6">
+        <marquee scrollamount="10">检测到未标价生命体... | 系统正在监视你... | 所有人最终都将被明码标价... | 严禁逃离货架...</marquee>
+    </div>
+
+    <div class="flex gap-10 justify-center p-10">
+        <div class="win95-border window-box">
+            <div class="bg-white h-[400px] border-4 inset flex items-center justify-center cursor-pointer" onclick="document.getElementById('fileInput').click()">
+                <div id="preview-text">拖入/点击上传照片</div>
+                <img id="imgPreview" class="hidden max-h-full">
+            </div>
+            <input type="file" id="fileInput" class="hidden" onchange="previewImage(this)">
+            <div class="bg-black text-[#0f0] p-4 font-mono h-[100px] text-xs">> 核心逻辑已加载...<br>> 待命状态...</div>
+            <button class="bg-[#c0c0c0] border-4 outset p-4 text-2xl font-bold" onclick="startRacking()">执行上架程序 [EXE]</button>
+        </div>
+
+        <div class="win95-border window-box">
+            <div id="display-box">
+                <div id="status-text" class="text-[#0f0] font-mono text-center">🔴 NO_SIGNAL<br>WAITING_FOR_ASSET...</div>
+                <div id="price-tag" class="price-tag hidden">￥0.50</div>
+                <img id="finalImg" class="hidden max-h-full">
+            </div>
         </div>
     </div>
 
     <script>
-        const consoleEl = document.getElementById('console');
-        
-        function log(msg) {
-            const time = new Date().toLocaleTimeString();
-            consoleEl.innerHTML += `> [${time}] ${msg}<br>`;
-            consoleEl.scrollTop = consoleEl.scrollHeight;
-        }
-
-        async function startProcess() {
-            const fileInput = document.getElementById('fileInput');
-            if (!fileInput.files[0]) {
-                alert("请先选择一个样本照片。");
-                return;
-            }
-
-            // UI 状态切换
-            document.getElementById('placeholder').classList.add('hidden');
-            document.getElementById('result-container').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
-            
-            log("捕获到碳基样本...");
-            log("正在上传至处理引擎...");
-
-            const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
-
-            try {
-                // 指向后端的 /upload 接口
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                if (result.status === 'success') {
-                    log("AI 处理完成：已转化为悬挂姿态。");
-                    log("正在赋予商品 ID 并上架 GitHub...");
-                    log("上架成功！货位地址已分配。");
-
-                    // 显示结果
-                    document.getElementById('result-img').src = result.url;
-                    document.getElementById('item-id').innerText = result.url.split('_').pop().split('.')[0];
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('result-container').classList.remove('hidden');
-                } else {
-                    log(`<span style="color: red;">错误: ${result.message}</span>`);
-                    alert("处理失败，请查看控制台日志。");
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('placeholder').classList.remove('hidden');
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById('imgPreview').src = e.target.result;
+                    document.getElementById('imgPreview').classList.remove('hidden');
+                    document.getElementById('preview-text').classList.add('hidden');
                 }
-            } catch (err) {
-                log(`<span style="color: red;">系统崩溃: ${err.message}</span>`);
-                document.getElementById('loading').classList.add('hidden');
+                reader.readAsDataURL(input.files[0]);
             }
+        }
+        async function startRacking() {
+            const file = document.getElementById('fileInput').files[0];
+            if (!file) return;
+            const status = document.getElementById('status-text');
+            status.innerHTML = "🟡 PROCESSING...";
+            const fd = new FormData(); fd.append('file', file);
+            try {
+                const res = await fetch('/upload', { method: 'POST', body: fd });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    status.classList.add('hidden');
+                    document.getElementById('finalImg').src = data.url;
+                    document.getElementById('finalImg').classList.remove('hidden');
+                    document.getElementById('price-tag').classList.remove('hidden');
+                } else { status.innerHTML = "🔴 ERROR: " + data.message; }
+            } catch (e) { status.innerHTML = "🔴 CONNECTION FAILED"; }
         }
     </script>
 </body>
