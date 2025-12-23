@@ -3,6 +3,15 @@ import os
 import time
 import requests
 import uvicorn
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+# 托管当前文件夹下的所有静态文件
+app.mount("/static", StaticFiles(directory="."), name="static")
+
+@app.get("/")
+async def read_index():
+    return FileResponse('index.html')
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from github import Github  # 确保已执行 pip install PyGithub
