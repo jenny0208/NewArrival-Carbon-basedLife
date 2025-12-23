@@ -5,51 +5,40 @@
     <title>【上架】碳基生物商品化装置</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 核心 Win95 风格样式 */
         body { background-color: #008080; font-family: 'SimSun', serif; padding: 20px; }
-        .win95-border { 
-            box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; 
-            background: #c0c0c0; border: 1px solid #000; 
-        }
-        .win95-btn { 
-            box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; 
-            background: #c0c0c0; font-weight: bold; 
-        }
-        .win95-btn:active { 
-            box-shadow: inset 1.5px 1.5px 0px #808080, 1px 1px 0px #fff; 
-            transform: translate(1px, 1px); 
-        }
-        .win95-btn:disabled { color: #808080; opacity: 0.6; cursor: not-allowed; }
-        
-        /* 状态栏样式 */
-        .status-bar { background: #000080; color: white; padding: 2px 8px; font-size: 12px; }
+        .win95-border { box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; background: #c0c0c0; border: 1px solid #000; }
+        .win95-btn { box-shadow: inset 1.5px 1.5px 0px #fff, inset -1.5px -1.5px 0px #808080, 1px 1px 0px #000; background: #c0c0c0; font-weight: bold; }
+        .win95-btn:active { box-shadow: inset 1.5px 1.5px 0px #808080, 1px 1px 0px #fff; transform: translate(1px, 1px); }
+        .win95-btn:disabled { color: #808080; opacity: 0.6; }
+        /* 蓝色标头 */
+        .blue-header { background: #000080; color: white; padding: 3px 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        /* 黑色终端绿字 */
+        .terminal { background: #000; color: #00ff00; font-family: 'Consolas', monospace; padding: 15px; border: 2px inset #808080; height: 180px; overflow-y: auto; font-size: 13px; line-height: 1.6; }
+        .terminal p { margin: 0; }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen">
     
-    <div class="win95-border p-1 w-full max-w-xl">
-        <div class="status-bar mb-1 flex justify-between items-center">
-            <span>D:\SYSTEM\UPLOAD.EXE</span>
+    <div class="win95-border p-1 w-full max-w-2xl">
+        <div class="blue-header">
+            <span>[上架] 碳基生物数字化管理系统</span>
             <span>[X]</span>
         </div>
         
-        <div class="p-4">
-            <h1 class="text-2xl font-bold mb-4 text-black text-center">碳基生命异化程序</h1>
-            
-            <div id="drop-zone" class="win95-border bg-white border-2 border-dashed border-gray-600 h-48 flex flex-col items-center justify-center mb-4 cursor-pointer">
-                <p id="status-text" class="text-black font-bold text-lg">点击或拖入照片</p>
-                <p class="text-gray-500 text-sm mt-2">支持格式: .JPG .PNG .BMP</p>
+        <div class="p-4 bg-[#c0c0c0]">
+            <div id="drop-zone" class="win95-border bg-white border-2 border-dashed border-gray-400 h-40 flex flex-col items-center justify-center mb-4 cursor-pointer">
+                <p id="status-text" class="text-black font-bold">>>> 点击捕获碳基生命样本 <<<</p>
                 <input type="file" id="file-input" class="hidden" accept="image/*">
             </div>
 
-            <div class="win95-border bg-black text-green-500 p-2 h-24 mb-4 text-xs overflow-y-auto leading-relaxed">
-                <p id="log-1">> 系统就绪...</p>
-                <p id="log-2">> 等待生物样本输入...</p>
+            <div class="terminal mb-4" id="terminal">
+                <p>> 初始化核心模块...</p>
+                <p>> 等待外部采样输入...</p>
             </div>
 
             <div class="flex flex-col gap-2">
                 <button id="submit-btn" class="win95-btn w-full py-3 text-lg">执行上架程序 [EXE]</button>
-                <button id="gallery-btn" class="win95-btn w-full py-2 text-sm" disabled onclick="location.href='/gallery'">进入货架 [GALLERY]</button>
+                <button id="gallery-btn" class="win95-btn w-full py-2 text-sm" disabled onclick="location.href='/gallery'">查看货架 [GALLERY]</button>
             </div>
         </div>
     </div>
@@ -58,46 +47,48 @@
         const fileInput = document.getElementById('file-input');
         const submitBtn = document.getElementById('submit-btn');
         const galleryBtn = document.getElementById('gallery-btn');
-        const dropZone = document.getElementById('drop-zone');
+        const term = document.getElementById('terminal');
         const statusText = document.getElementById('status-text');
-        const log1 = document.getElementById('log-1');
-        const log2 = document.getElementById('log-2');
 
-        // 文件选择交互
-        dropZone.onclick = () => fileInput.click();
+        // 终端增加绿字函数
+        function addLog(text) {
+            const p = document.createElement('p');
+            p.innerText = "> " + text;
+            term.appendChild(p);
+            term.scrollTop = term.scrollHeight;
+        }
+
+        document.getElementById('drop-zone').onclick = () => fileInput.click();
+        
         fileInput.onchange = () => {
             if(fileInput.files[0]) {
-                statusText.innerText = "已捕获样本: " + fileInput.files[0].name;
-                log2.innerText = "> 样本已装载，等待异化指令...";
+                statusText.innerText = "样本已装载: " + fileInput.files[0].name;
+                addLog("样本捕获成功。大小: " + (fileInput.files[0].size/1024).toFixed(2) + "KB");
             }
         };
 
-        // 上传与处理逻辑
         submitBtn.onclick = async () => {
-            if (!fileInput.files[0]) return alert("未检测到生物样本！");
+            if (!fileInput.files[0]) return alert("未发现待上架样本！");
             
             submitBtn.disabled = true;
-            submitBtn.innerText = "打码中...";
-            log1.innerText = "> 正在连接 AI 服务器进行异化处理...";
-            log2.innerText = "> 正在剥离碳基特征，注入数字化标签...";
-            
+            submitBtn.innerText = "正在打码...";
+            addLog("开始资产转换流程...");
+            addLog("正在上传至异化引擎 (SiliconFlow)...");
+
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
 
             try {
-                // 指向关键的 /upload 接口
-                const response = await fetch('/upload', { 
-                    method: 'POST', 
-                    body: formData 
-                });
+                const response = await fetch('/upload', { method: 'POST', body: formData });
                 const data = await response.json();
                 
                 if (data.status === 'success') {
-                    log1.innerText = "> 异化完成。资产已同步至 GitHub。";
-                    log2.innerText = "> 状态：已成功挂载至云端货架。";
-                    alert("资产登记成功！已分配云端货位。");
+                    addLog("AI 异化成功。");
+                    addLog("资产已入库。分配路径: shelf/" + data.url.split('/').pop());
+                    addLog("正在建立远程连接...");
+                    addLog("上架操作已完成。");
                     
-                    // 激活 Gallery 按钮并变色
+                    alert("上架成功！资产已同步至云端货位。");
                     galleryBtn.disabled = false;
                     galleryBtn.style.backgroundColor = "#000080";
                     galleryBtn.style.color = "white";
@@ -105,11 +96,8 @@
                     throw new Error(data.message);
                 }
             } catch (err) {
-                console.error(err);
-                statusText.innerText = "ERROR: 系统中断";
-                log1.innerText = "> 致命错误: " + (err.message || "终端失联");
-                log2.innerText = "> 请检查环境变量及网络连接。";
-                alert("上架失败: " + (err.message || "请查看日志"));
+                addLog("!! 致命错误: " + err.message);
+                alert("上架失败，请检查 API Token 或网络连接。");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = "执行上架程序 [EXE]";
