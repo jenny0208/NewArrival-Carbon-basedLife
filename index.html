@@ -2,117 +2,132 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>汇报：碳基生物商品化装置</title>
+    <title>碳基生物商品化装置 - 样本上传</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #008080; font-family: 'SimSun', serif; overflow: hidden; }
-        .slide { display: none; height: 100vh; width: 100vw; padding: 30px; }
-        .active { display: flex; flex-direction: column; }
+        body { background-color: #008080; font-family: 'SimSun', serif; color: #000; padding: 20px; }
         .win95-border { box-shadow: inset 2px 2px 0px #fff, inset -2px -2px 0px #808080, 2px 2px 0px #000; background: #c0c0c0; border: 1px solid #000; }
-        .blue-header { background: #000080; color: white; padding: 8px 15px; font-weight: bold; }
-        .text-body { font-size: 1.8rem; line-height: 1.6; }
-        .nav-bar { position: fixed; bottom: 30px; right: 40px; display: flex; gap: 15px; }
-        .win95-btn { padding: 10px 25px; background: #c0c0c0; border: 3px outset #fff; font-weight: bold; cursor: pointer; }
+        .blue-header { background: #000080; color: white; padding: 5px 10px; font-weight: bold; display: flex; justify-content: space-between; }
+        
+        /* 终端样式 */
+        #console { background: #000; color: #0f0; font-family: monospace; padding: 15px; height: 200px; overflow-y: auto; font-size: 14px; border: 2px inset #808080; }
+        
+        /* 模拟 Meme 低像素滤镜 */
+        .meme-low-fi { 
+            image-rendering: pixelated; 
+            filter: contrast(1.2) brightness(1.1) saturate(1.1); 
+            border: 1px solid #000;
+        }
+
+        .tag-price { background: #ffff00; color: #f00; border: 1px solid #000; padding: 2px 8px; font-weight: 900; transform: rotate(-5deg); position: absolute; top: 10px; right: 10px; box-shadow: 2px 2px 0px #000; }
+        
+        .upload-btn { padding: 10px 20px; background: #c0c0c0; border: 3px outset #fff; font-weight: bold; cursor: pointer; }
+        .upload-btn:active { border: 3px inset #fff; }
+        .hidden { display: none; }
     </style>
 </head>
-<body>
+<body class="flex flex-col items-center justify-center min-h-screen">
 
-    <div class="slide active" id="slide1">
-        <div class="win95-border m-auto w-4/5 p-16">
-            <h1 class="text-7xl font-black text-blue-900 mb-10">碳基生物商品化装置</h1>
-            <div class="text-body border-l-8 border-blue-800 pl-8 bg-gray-100 py-6">
-                <p>探讨影像如何在 Meme 文化 与 商品逻辑 中流通。</p>
-                <p>影像语言不再只存在于画面内部，而是存在于系统结构与展示方式之中。</p>
-            </div>
+    <div class="win95-border w-full max-w-4xl">
+        <div class="blue-header">
+            <span>CARBON_LIFE_COMMODITIZER.EXE</span>
+            <span>[?] [X]</span>
         </div>
-    </div>
-
-    <div class="slide" id="slide2">
-        <div class="win95-border h-full flex flex-col">
-            <div class="blue-header">CONCEPT_ANALYSIS.SYS</div>
-            <div class="flex-grow p-12 grid grid-cols-2 gap-12">
-                <div class="win95-border p-10 bg-[#000080] text-white">
-                    <h2 class="text-4xl font-bold mb-6 italic text-yellow-400">Meme 文化</h2>
-                    <p class="text-2xl">去作者、去语境、快速流通。强调“可用性”而非“完整性”。</p>
+        
+        <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div class="win95-border p-4 bg-white">
+                    <h2 class="font-bold mb-4 border-b-2 border-black">1. 采集碳基样本</h2>
+                    <input type="file" id="fileInput" class="mb-4 text-sm" accept="image/*">
+                    <button onclick="startProcess()" class="upload-btn w-full">执行“上架”指令</button>
                 </div>
-                <div class="win95-border p-10 bg-white">
-                    <h3 class="text-4xl font-bold mb-6 text-blue-900 underline text-center">商品系统</h3>
-                    <ul class="text-2xl space-y-4 font-bold">
-                        <li>• 可定价 / 可替换</li>
-                        <li>• 可库存 / 可索引</li>
-                        <li class="bg-blue-900 text-white px-2 mt-4 inline-block">Meme 本身已是一种商品上架形式</li>
-                    </ul>
+
+                <div id="console">
+                    > 系统就绪...<br>
+                    > 等待输入样本...<br>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="slide" id="slide3">
-        <div class="win95-border h-full flex flex-col">
-            <div class="blue-header">CORE_OPERATION.EXE</div>
-            <div class="flex-grow p-12 flex gap-10">
-                <div class="w-1/2 flex flex-col justify-center space-y-8">
-                    <h2 class="text-5xl font-black text-red-600 underline">上架动作：悬挂</h2>
-                    <p class="text-3xl">1. 提取人物影像</p>
-                    <p class="text-3xl">2. 统一转化为 <span class="bg-black text-white px-2">悬挂姿态</span></p>
-                    <p class="text-3xl">3. 模拟引体向上的物理挂载</p>
-                    <p class="text-2xl italic text-gray-600">将人体自然纳入“货架展示逻辑”</p>
+            <div class="win95-border p-4 bg-gray-100 flex flex-col items-center justify-center relative min-h-[300px]">
+                <div id="loading" class="hidden flex flex-col items-center">
+                    <div class="animate-spin text-4xl mb-4">⏳</div>
+                    <p class="italic text-gray-600 font-bold">正在进行商品化处理...</p>
                 </div>
-                <div class="w-1/2 border-4 border-gray-400 bg-gray-50 flex items-center justify-center">
-                    <div class="text-9xl grayscale opacity-30">🧍</div>
-                    <div class="absolute top-1/4 w-1/3 h-2 bg-black"></div>
+
+                <div id="result-container" class="hidden relative">
+                    <div class="tag-price">￥0.50</div>
+                    <img id="result-img" src="" alt="Result" class="meme-low-fi w-full max-w-[300px]">
+                    <p class="text-center mt-4 font-mono text-sm bg-black text-white p-2">ITEM_ID: <span id="item-id"></span></p>
+                </div>
+
+                <div id="placeholder" class="text-gray-400 italic text-center text-sm">
+                    [ 货架位待机 ]<br>等待上架动作...
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="slide" id="slide4">
-        <div class="win95-border h-full flex flex-col">
-            <div class="blue-header">VISUAL_STYLE.CFG</div>
-            <div class="flex-grow p-12">
-                <div class="grid grid-cols-2 gap-8 mb-10 text-3xl font-bold">
-                    <div class="win95-border p-6 bg-white text-center">📸 写实摄影风格</div>
-                    <div class="win95-border p-6 bg-white text-center">🧍 完整人体呈现</div>
-                    <div class="win95-border p-6 bg-white text-center">⬜ 统一白色背景</div>
-                    <div class="win95-border p-6 bg-white text-center">🚫 去除具体叙事</div>
-                </div>
-                <div class="bg-black p-10 text-white text-4xl italic text-center">
-                    “产生一种‘看起来不太对，但又说不出哪里不对’的状态。”
-                </div>
-            </div>
+        
+        <div class="p-4 bg-gray-300 text-xs text-right border-t border-black italic">
+            影像状态：无用之用 | 上架执着：ENABLED
         </div>
-    </div>
-
-    <div class="slide" id="slide5">
-        <div class="win95-border h-full flex flex-col">
-            <div class="blue-header">ARTISTIC_EXPRESSION.LOG</div>
-            <div class="flex-grow p-12 flex flex-col justify-center">
-                <h2 class="text-5xl font-black mb-10 border-b-8 border-blue-900 inline-block">我想浅浅表达的是...</h2>
-                <div class="text-3xl space-y-8 leading-relaxed">
-                    <p>Meme 往往是低像素、不被认为是“有用”的。而现代社会总执着于将一切“上架”。</p>
-                    <p class="bg-yellow-200 p-6">我通过这种创作去搜集这些上架 Meme，不仅是因为好玩，更是想观察当这些“无用”影像被塞进极其正经的商品系统时，所产生的<span class="text-red-600 font-bold underline">有序的荒谬感</span>。</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="nav-bar">
-        <button class="win95-btn" onclick="move(-1)">PREV</button>
-        <button class="win95-btn" onclick="move(1)">NEXT</button>
     </div>
 
     <script>
-        let current = 1; const total = 5;
-        function move(dir) {
-            document.getElementById('slide' + current).classList.remove('active');
-            current += dir;
-            if (current > total) current = 1; if (current < 1) current = total;
-            document.getElementById('slide' + current).classList.add('active');
+        const consoleEl = document.getElementById('console');
+        
+        function log(msg) {
+            const time = new Date().toLocaleTimeString();
+            consoleEl.innerHTML += `> [${time}] ${msg}<br>`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
         }
-        document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight' || e.key === ' ') move(1);
-            if (e.key === 'ArrowLeft') move(-1);
-        });
+
+        async function startProcess() {
+            const fileInput = document.getElementById('fileInput');
+            if (!fileInput.files[0]) {
+                alert("请先选择一个样本照片。");
+                return;
+            }
+
+            // UI 状态切换
+            document.getElementById('placeholder').classList.add('hidden');
+            document.getElementById('result-container').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            
+            log("捕获到碳基样本...");
+            log("正在上传至处理引擎...");
+
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                // 指向后端的 /upload 接口
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    log("AI 处理完成：已转化为悬挂姿态。");
+                    log("正在赋予商品 ID 并上架 GitHub...");
+                    log("上架成功！货位地址已分配。");
+
+                    // 显示结果
+                    document.getElementById('result-img').src = result.url;
+                    document.getElementById('item-id').innerText = result.url.split('_').pop().split('.')[0];
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('result-container').classList.remove('hidden');
+                } else {
+                    log(`<span style="color: red;">错误: ${result.message}</span>`);
+                    alert("处理失败，请查看控制台日志。");
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('placeholder').classList.remove('hidden');
+                }
+            } catch (err) {
+                log(`<span style="color: red;">系统崩溃: ${err.message}</span>`);
+                document.getElementById('loading').classList.add('hidden');
+            }
+        }
     </script>
 </body>
 </html>
