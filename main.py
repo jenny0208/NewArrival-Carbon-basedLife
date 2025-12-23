@@ -7,9 +7,11 @@ from github import Github
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# 允许跨域请求
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-# 路由：支持首页访问
+# 首页路由：支持 Render 的健康检查
 @app.api_route("/", methods=["GET", "HEAD"])
 async def read_index():
     return FileResponse('index.html')
@@ -17,34 +19,59 @@ async def read_index():
 @app.post("/upload")
 async def upload_to_shelf(file: UploadFile = File(...)):
     try:
-        # 1. 变量校验
-        sk_key = os.getenv("SILICONFLOW_API_KEY")
-        gh_token = os.getenv("GITHUB_TOKEN")
-        gh_repo = os.getenv("GITHUB_REPO") # 格式: 用户名/仓库名
+        # 从 Render 环境变量获取配置
+        API_KEY = os.getenv("SILICONFLOW_API_KEY")
+        GH_TOKEN = os.getenv("GITHUB_TOKEN")
+        GH_REPO = os.getenv("GITHUB_REPO")
 
-        # 2. 调用 AI (FLUX.1-schnell)
-        sf_res = requests.post(
-            "https://api.siliconflow.cn/v1/images/generations",
-            headers={"Authorization": f"Bearer {sk_key}"},
-            json={
-                "model": "black-forest-labs/FLUX.1-schnell",
-                "prompt": "Windows 95 style glitch art, human portrait as a supermarket product, thermal printer style, dithered pixel art",
-                "width": 512, "height": 512
-            }
-        )
-        # 捕获 Token 无效等错误
-        if sf_res.status_code != 200:
-            return JSONResponse({"status": "error", "message": f"AI服务异常: {sf_res.json().get('message')}"}, status_code=500)
+        if not API_KEY:
+            return JSONResponse({"status": "error", "message": "环境变量中缺失 AI API Key"}, status_code=500)
 
-        ai_url = sf_res.json()['images'][0]['url']
-        img_data = requests.get(ai_url).content
+        # 1. 调用 SiliconFlow API (严格匹配文档参数)
+        sf_url = "https://api.siliconflow.cn/v1/images/generations"
+        payload = {
+            "model": "black-forest-labs/FLUX.1-schnell",
+            "prompt": "Windows 95 style glitch art, human portrait as a cheap supermarket product, pixelated, yellow price tag on top",
+            "image_size": "512x512",
+            "batch_size": 1
+        }
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        }
 
-        # 3. 存档 GitHub
-        g = Github(gh_token)
-        repo = g.get_repo(gh_repo)
+        response = requests.post(sf_url, json=payload, headers=headers)
+        
+        # 2. 健壮的错误处理：解决 'str' object has no attribute 'get'
+        try:
+            res_json = response.json()
+        except Exception:
+            res_json = response.text
+
+        if response.status_code != 200:
+            # 这里的逻辑确保了无论 API 返回什么格式，都能提取出错误文字
+            error_msg = res_json.get("message", str(res_json)) if isinstance(res_json, dict) else str(res_json)
+            print(f"AI 接口报错详情: {error_msg}")
+            return JSONResponse({"status": "error", "message": f"AI服务异常: {error_msg}"}, status_code=500)
+
+        # 3. 提取图片并存档至 GitHub
+        ai_img_url = res_json['images'][0]['url']
+        final_img_data = requests.get(ai_img_url).content
+
+        g = Github(GH_TOKEN)
+        repo = g.get_repo(GH_REPO)
         file_path = f"shelf/item_{uuid.uuid4().hex[:8]}.png"
-        repo.create_file(path=file_path, message="Add new item", content=img_data, branch="main")
+        repo.create_file(path=file_path, message="New product shelved", content=final_img_data, branch="main")
 
-        return {"status": "success", "url": f"https://raw.githubusercontent.com/{gh_repo}/main/{file_path}"}
+        return {
+            "status": "success", 
+            "url": f"https://raw.githubusercontent.com/{GH_REPO}/main/{file_path}"
+        }
+
     except Exception as e:
-        return JSONResponse({"status": "error", "message": str(e)}, status_code=500)
+        print(f"系统运行错误: {str(e)}")
+        return JSONResponse({"status": "error", "message": f"执行异常: {str(e)}"}, status_code=500)
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=10000)
