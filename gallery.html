@@ -1,148 +1,71 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RACK_LOGIC_GALLERY - 公有货位</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>云端货架 - GALLERY</title>
     <style>
-        @font-face {
-            font-family: 'Pixel';
-            src: url('https://fonts.cdnfonts.com/s/16218/MS-Sans-Serif.woff') format('woff');
-        }
-
-        body {
-            background-color: #008080; /* Win95 经典绿蓝背景 */
-            font-family: 'Pixel', sans-serif;
-            color: #000;
-            overflow-x: hidden;
-        }
-
-        /* Win95 凹凸边框效果 */
-        .win95-border {
+        body { background: #008080; font-family: "MS Sans Serif", "Courier New", monospace; padding: 20px; }
+        h1 { color: white; text-align: center; text-shadow: 2px 2px #000; }
+        .shelf {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 20px;
             background: #c0c0c0;
-            border-left: 2px solid #ffffff;
-            border-top: 2px solid #ffffff;
-            border-right: 2px solid #808080;
-            border-bottom: 2px solid #808080;
-            box-shadow: 1px 1px 0 0 #000000;
+            border: 3px inset #fff;
         }
-
-        .win95-inset {
-            background: #ffffff;
-            border-left: 2px solid #808080;
-            border-top: 2px solid #808080;
-            border-right: 2px solid #ffffff;
-            border-bottom: 2px solid #ffffff;
+        .item {
+            background: white;
+            border: 2px outset #eee;
+            padding: 10px;
+            text-align: center;
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
         }
-
-        .title-bar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            color: white;
-            padding: 3px 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .terminal-text {
-            color: #0f0;
-            text-shadow: 0 0 5px #0f0;
-            background: #000;
-        }
-
-        /* 吊挂绳索效果 */
-        .rack-item {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 30px; /* 为绳索留出空间 */
-        }
-        .rack-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 2px;
-            height: 30px; /* 绳索长度 */
-            background: #808080; /* 绳索颜色 */
-            z-index: 10;
-        }
-        .rack-item img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-            border: 2px solid #808080; /* 图片边框 */
-            box-shadow: 1px 1px 0 0 #000000;
-            background-color: #c0c0c0; /* 背景防止透明图 */
-        }
-        .rack-item .asset-id {
-            background-color: #000080;
-            color: white;
-            font-size: 8px;
-            padding: 1px 3px;
-            margin-top: 5px;
-            position: absolute; /* 让ID标签像挂在商品上 */
-            bottom: 5px;
-            left: 5px;
-            opacity: 0.8;
-        }
+        .item img { width: 100%; height: auto; border: 1px solid #000; }
+        .price { color: red; font-weight: bold; font-size: 1.2em; margin: 5px 0; }
+        .barcode { font-family: 'Libre Barcode 39', cursive; font-size: 20px; } /* 模拟条形码 */
+        .btn-back { background: #c0c0c0; border: 2px outset #fff; padding: 5px 10px; cursor: pointer; margin-bottom: 10px; }
     </style>
 </head>
-<body class="p-4 md:p-10 flex flex-col items-center">
-
-    <div class="win95-border w-full max-w-6xl overflow-hidden">
-        <div class="title-bar">
-            <span class="text-sm font-bold">PUBLIC_RACKS - 全球实时监控画廊</span>
-            <div class="flex gap-1">
-                <button onclick="window.location.href='./index.html'" class="win95-border px-1 text-black text-xs h-4 flex items-center justify-center">← 返回终端</button>
-                <button class="win95-border px-1 text-black text-xs h-4 w-4 flex items-center justify-center">_</button>
-                <button class="win95-border px-1 text-black text-xs h-4 w-4 flex items-center justify-center">X</button>
-            </div>
-        </div>
-        
-        <div class="p-4 bg-black min-h-[500px]">
-            <div id="gallery-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 justify-items-center">
-                <p class="text-[#0f0] text-xs col-span-full text-center animate-pulse">正在检索云端货架信息...</p>
-            </div>
-        </div>
+<body>
+    <button class="btn-back" onclick="location.href='/'"> 返回系统 </button>
+    <h1> 碳基生命“上架”存档仓库 </h1>
+    <div class="shelf" id="shelf">
+        <p style="color:#000">正在扫描云端数据库...</p>
     </div>
 
     <script>
-        // 配置：请修改为你部署后的后端 URL
-        const BACKEND_URL = "https://newarrival-carbon-basedlife.onrender.com"; // 或者你的 Render/Railway 后端地址
-        const galleryContainer = document.getElementById('gallery-container');
+        // 【小白注意】只需要改这里：
+        const GITHUB_USER = "Jenny0208"; 
+        const GITHUB_REPO = "NewArrival-Carbon-basedLife";
 
-        // 获取画廊
-        async function fetchGallery() {
+        async function fetchShelf() {
+            const shelfDiv = document.getElementById('shelf');
             try {
-                const response = await fetch(`${BACKEND_URL}/gallery`);
-                const images = await response.json();
+                const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/shelf`);
+                const data = await res.json();
                 
-                galleryContainer.innerHTML = '';
-                if (images.length === 0) {
-                    galleryContainer.innerHTML = '<p class="text-[#0f0] text-xs col-span-full text-center">当前货架为空。请返回终端上架资产。</p>';
-                } else {
-                    images.forEach((img, index) => {
-                        const div = document.createElement('div');
-                        div.className = "rack-item w-full max-w-[200px] cursor-pointer"; // max-w 控制商品大小
-                        div.innerHTML = `
-                            <img src="${img.url}" alt="上架资产">
-                            <span class="asset-id">ID: ${index + 1}</span>
-                        `;
-                        galleryContainer.appendChild(div);
-                    });
-                }
-            } catch (err) {
-                console.error('加载画廊失败:', err);
-                galleryContainer.innerHTML = '<p class="text-red-500 text-xs col-span-full text-center">货架信号异常。</p>';
+                shelfDiv.innerHTML = '';
+                // 筛选图片并按时间倒序
+                const images = data.filter(f => f.name.endsWith('.png')).reverse();
+
+                images.forEach(img => {
+                    const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${img.path}`;
+                    const item = document.createElement('div');
+                    item.className = 'item';
+                    item.innerHTML = `
+                        <img src="${rawUrl}">
+                        <div class="price">￥0.50</div>
+                        <div style="font-size:10px">ID: ${img.name.split('_')[2]}</div>
+                        <div style="letter-spacing: 2px;">|||| ||| || |||</div>
+                    `;
+                    shelfDiv.appendChild(item);
+                });
+            } catch (e) {
+                shelfDiv.innerHTML = '<p>暂无库存或仓库配置错误。</p>';
             }
         }
-
-        // 初始化加载画廊
-        fetchGallery();
-        // 每60秒刷新一次画廊（可选）
-        setInterval(fetchGallery, 60000);
+        fetchShelf();
     </script>
 </body>
 </html>
