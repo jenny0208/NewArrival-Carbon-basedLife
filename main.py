@@ -13,7 +13,7 @@ MODEL_ID = "Qwen/Qwen-Image-Edit"
 
 # GitHub 免费存储配置
 GH_TOKEN = "你的GitHub_Token" # 记得填入你的 Token
-GH_REPO_NAME = "你的用户名/my-racked-assets" # 你的仓库名
+GH_REPO_NAME = "jenny0208/NewArrival-Carbon-basedLife"
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
