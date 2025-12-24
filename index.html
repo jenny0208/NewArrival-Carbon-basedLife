@@ -127,9 +127,14 @@
             formData.append('file', fileInput.files[0]);
 
             try {
-                // 指向云端相对路径
-                const response = await fetch('/upload', { method: 'POST', body: formData });
-                const data = await response.json();
+    const response = await fetch('/upload', { method: 'POST', body: formData });
+    
+    // 增加：捕获 401 错误并给出直观提示
+    if (response.status === 401) {
+        throw new Error("GitHub Token 已失效，请在后端重新配置。");
+    }
+
+    const data = await response.json();
                 
                 if (data.status === 'success') {
                     finalImg.src = data.url;
