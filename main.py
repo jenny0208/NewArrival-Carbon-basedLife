@@ -16,9 +16,22 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_REPO = "Jenny0208/NewArrival-Carbon-basedLife"
 dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
 
+# --- 2. 页面路由 (Route) ---
+
 @app.get("/")
 async def read_index():
     return FileResponse('index.html')
+
+# ✅ 新增：告诉服务器 gallery.html 在哪里
+@app.get("/gallery.html")
+async def read_gallery():
+    # 确保你的文件真的叫 gallery.html
+    if os.path.exists("gallery.html"):
+        return FileResponse("gallery.html")
+    else:
+        return JSONResponse({"error": "gallery.html not found on server"}, status_code=404)
+
+# --- 3. 上传接口 ---
 
 @app.post("/upload")
 async def upload_to_shelf(file: UploadFile = File(...)):
@@ -27,14 +40,13 @@ async def upload_to_shelf(file: UploadFile = File(...)):
         if not GITHUB_TOKEN:
             return JSONResponse({"status": "error", "message": "GITHUB_TOKEN Missing"}, status_code=401)
 
-        # 1. 保存用户上传的图片为临时文件
+        # 1. 保存临时文件
         file_content = await file.read()
         temp_filename = f"temp_{uuid.uuid4()}.png"
         with open(temp_filename, "wb") as f:
             f.write(file_content)
 
-        # 2. 准备提示词 (保留了高清、监控风格、白色背景的设定)
-       # 2. 准备提示词 (加强版：强制把手举起来)
+        # 2. 准备提示词 (保留高清+姿势控制)
         final_prompt = (
             "(change pose:1.6), (arms reaching straight UP:1.7), (grabbing a horizontal bar above head:1.6), "
             "(arms vertical), (hanging by hands), "
@@ -43,7 +55,7 @@ async def upload_to_shelf(file: UploadFile = File(...)):
             "(flat lighting), surveillance camera style, realistic photo."
         )
 
-        # 3. 🔴 核心修改：使用你指定的模型 ID
+        # 3. 调用阿里云 Qwen-Image-Edit
         messages = [
             {
                 "role": "user",
@@ -54,35 +66,30 @@ async def upload_to_shelf(file: UploadFile = File(...)):
             }
         ]
 
-        # 根据你提供的文档，该模型属于 qwen-image-edit-plus 系列
         rsp = dashscope.MultiModalConversation.call(
-            model='qwen-image-edit-plus-2025-12-15',  # 📍 已锁定为你提供的版本
+            model='qwen-image-edit-plus', 
             messages=messages
         )
 
-        # 4. 处理返回结果
+        # 4. 处理结果
         if rsp.status_code == HTTPStatus.OK:
             try:
-                # 解析 Qwen 的返回结构
                 content = rsp.output.choices[0].message.content
                 ai_img_url = ""
-                # 遍历返回内容找到图片链接
                 for item in content:
                     if isinstance(item, dict) and 'image' in item:
                         ai_img_url = item['image']
                         break
                 
                 if not ai_img_url:
-                     raise Exception("No image URL found in AI response")
+                     raise Exception("No image URL found")
 
                 print(f"AI Success: {ai_img_url}")
                 img_content = requests.get(ai_img_url).content
                 
             except Exception as parse_err:
-                 print(f"Parse Error: {rsp}")
-                 return JSONResponse({"status": "error", "message": f"AI Response Parse Error: {str(parse_err)}"}, status_code=500)
+                 return JSONResponse({"status": "error", "message": f"Parse Error: {str(parse_err)}"}, status_code=500)
         else:
-            print(f"AI Error: {rsp.code}, {rsp.message}")
             return JSONResponse({"status": "error", "message": f"Aliyun Error: {rsp.message}"}, status_code=500)
 
         # 5. 上传 GitHub
