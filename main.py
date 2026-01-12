@@ -34,13 +34,13 @@ async def upload_to_shelf(file: UploadFile = File(...)):
             f.write(file_content)
 
         # 2. 准备提示词 (保留了高清、监控风格、白色背景的设定)
+       # 2. 准备提示词 (加强版：强制把手举起来)
         final_prompt = (
-            "(masterpiece), (clear face:1.5), (detailed facial features:1.4), (sharp focus:1.3), "
-            "(hanging from a horizontal metal bar:1.4), (arms STRAIGHT UP over head:1.4), "
-            "body suspended in air, limp body posture, "
-            "(simple pure white background:1.6), (flat lighting), (no shadows), "
-            "surveillance camera style, cold atmosphere, "
-            "pale skin, lifeless expression, realistic photo."
+            "(change pose:1.6), (arms reaching straight UP:1.7), (grabbing a horizontal bar above head:1.6), "
+            "(arms vertical), (hanging by hands), "
+            "body suspended in air, feet off the ground, limp legs, "
+            "(masterpiece), (clear face:1.5), (simple pure white background:1.6), "
+            "(flat lighting), surveillance camera style, realistic photo."
         )
 
         # 3. 🔴 核心修改：使用你指定的模型 ID
