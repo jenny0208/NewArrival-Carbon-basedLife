@@ -1,42 +1,190 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>云端货架</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon-based Life Storage | 碳基生物货架库存</title>
     <style>
-        body { background: #008080; font-family: monospace; padding: 20px; color: white; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; }
-        .card { background: #c0c0c0; border: 2px outset #fff; padding: 10px; color: black; text-align: center; }
-        .card img { width: 100%; border: 1px solid #000; }
-        .price { color: red; font-weight: bold; }
+        body {
+            background-color: #000;
+            color: #0f0; /* 经典的黑客绿 */
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            border-bottom: 2px dashed #0f0;
+            display: inline-block;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px #0f0;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #000;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 5px 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .back-btn:hover {
+            background: #0f0;
+            color: #000;
+        }
+
+        /* 货架网格 */
+        .gallery-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .storage-unit {
+            border: 1px solid #333;
+            background: #111;
+            padding: 10px;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .storage-unit:hover {
+            transform: scale(1.02);
+            border-color: #0f0;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            z-index: 10;
+        }
+
+        .storage-unit img {
+            width: 100%;
+            height: auto;
+            filter: grayscale(80%) contrast(1.2); /* 监控画面感 */
+            border-bottom: 1px solid #333;
+            display: block;
+        }
+        
+        /* 鼠标悬停恢复色彩 */
+        .storage-unit:hover img {
+            filter: grayscale(0%);
+        }
+
+        .unit-info {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            text-align: left;
+            color: #666;
+        }
+
+        .unit-info span {
+            display: block;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #f00; /* 默认离线红 */
+            border-radius: 50%;
+            margin-right: 5px;
+            box-shadow: 0 0 5px #f00;
+        }
+        
+        .status-online {
+            background-color: #0f0;
+            box-shadow: 0 0 5px #0f0;
+        }
+
+        #loading-text {
+            font-size: 1.5rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
     </style>
 </head>
 <body>
-    <h1>C:\STORAGE\SHELF.LOG</h1>
-    <div class="grid" id="container">加载中...</div>
+
+    <a href="index.html" class="back-btn">< 返回上架处</a>
+
+    <h1>WAREHOUSE MONITORING // 货架监控视图</h1>
+
+    <div id="loading-text">CONNECTING TO DATABASE...</div>
+
+    <div class="gallery-container" id="gallery">
+        </div>
 
     <script>
-        // 【小白修改点】
-        const GITHUB_USER = "Jenny0208"; 
-        const GITHUB_REPO = "NewArrival-Carbon-basedLife";
+        // 配置你的 GitHub 仓库信息
+        const REPO_OWNER = "Jenny0208";
+        const REPO_NAME = "NewArrival-Carbon-basedLife";
+        const FOLDER_PATH = "shelf"; 
 
-        async function load() {
-            const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/shelf`);
-            const files = await res.json();
-            const container = document.getElementById('container');
-            container.innerHTML = '';
+        async function fetchGallery() {
+            const gallery = document.getElementById('gallery');
+            const loading = document.getElementById('loading-text');
 
-            files.filter(f => f.name.endsWith('.png')).reverse().forEach(file => {
-                const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${file.path}`;
-                container.innerHTML += `
-                    <div class="card">
-                        <img src="${url}">
-                        <div class="price">￥0.50</div>
-                        <div style="font-size:10px">${file.name}</div>
-                    </div>`;
-            });
+            try {
+                // 请求 GitHub API 获取文件列表
+                const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FOLDER_PATH}`);
+                
+                if (!response.ok) throw new Error("Connection Refused");
+
+                const files = await response.json();
+                
+                // 只要图片文件 (png/jpg/jpeg)
+                const images = files.filter(file => file.name.match(/\.(png|jpg|jpeg)$/i));
+
+                loading.style.display = 'none'; // 隐藏加载提示
+
+                if (images.length === 0) {
+                    gallery.innerHTML = "<p>STORAGE EMPTY. 暂无库存。</p>";
+                    return;
+                }
+
+                // 生成 HTML
+                gallery.innerHTML = images.map(file => {
+                    // 随机生成一些“假数据”增加赛博感
+                    const randomTemp = (36 + Math.random()).toFixed(1);
+                    const randomHeart = Math.floor(60 + Math.random() * 40);
+                    // 截取 ID (把文件名里的 item_ 去掉)
+                    const shortId = file.name.replace('item_', '').replace('.png', '').substring(0, 8);
+
+                    return `
+                        <div class="storage-unit">
+                            <a href="${file.download_url}" target="_blank">
+                                <img src="${file.download_url}" alt="${shortId}" loading="lazy">
+                            </a>
+                            <div class="unit-info">
+                                <span>ID: <strong style="color:#0f0">${shortId}</strong></span>
+                                <span>TEMP: ${randomTemp}°C | HR: ${randomHeart} bpm</span>
+                                <div style="margin-top:5px;">
+                                    <span class="status-dot status-online"></span> 
+                                    <span style="color:#0f0; font-size:0.7rem;">MONITORED</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+            } catch (error) {
+                console.error(error);
+                loading.textContent = "SYSTEM ERROR: DATA CORRUPTED (无法读取 GitHub 数据)";
+                loading.style.color = "red";
+            }
         }
-        load();
+
+        // 页面一加载就执行
+        fetchGallery();
     </script>
 </body>
 </html>
