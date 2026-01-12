@@ -3,3 +3,4 @@ uvicorn
 requests
 PyGithub
 python-multipart
+dashscope
